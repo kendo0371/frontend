@@ -1,3 +1,51 @@
+# Цуврал хөтлөгч — Frontend
+
+`npm run dev` → http://localhost:3000 (backend `localhost:4000` дээр асаалттай байх ёстой)
+
+## Хаана юу байгаа вэ
+
+```
+src/
+├── app/                     Next.js хуудсууд
+│   ├── layout.js            HTML shell, font
+│   ├── page.js              Нүүр хуудас (<MovieTracker /> харуулна)
+│   └── loading.js
+│
+├── lib/                     React-гүй цэвэр JS
+│   ├── api.js               Backend руу хийх бүх fetch (profiles, movies)
+│   ├── storage.js           localStorage (сонгосон profile, анги явц)
+│   └── statuses.js          Статусын жагсаалт + өнгө  ← шинэ статус энд нэмнэ
+│
+├── hooks/                   State + логик (UI-гүй)
+│   ├── useProfiles.js       Profile жагсаалт, сонгох
+│   ├── useMovies.js         Цуврал татах / нэмэх / засах / устгах
+│   └── useProgress.js       Аль улирал, ангид явааг хөтлөх
+│
+└── components/
+    ├── ui/                  Дахин ашиглагдах жижиг хэсгүүд
+    │   ├── styles.js        input/button-ий нийтлэг class
+    │   ├── StatusBadge.js
+    │   ├── StatusSelect.js
+    │   └── Stepper.js       − 3 + товч
+    ├── profiles/
+    │   └── ProfilePicker.js
+    └── movies/
+        ├── MovieTracker.js  Гол хэсэг: hook-уудыг холбоод UI угсарна
+        ├── AddMovieForm.js
+        ├── MovieRow.js      Жагсаалтын нэг мөр
+        └── EpisodeTracker.js  S01 · E03 харуулалт
+```
+
+**Data урсгал:** `lib/api.js` → `hooks/*` → `MovieTracker` → жижиг component-ууд (props-оор).
+
+**Хаана засах вэ:**
+- Backend endpoint өөрчлөгдвөл → `lib/api.js`
+- Шинэ статус / өнгө → `lib/statuses.js`
+- Нэг мөрний харагдах байдал → `components/movies/MovieRow.js`
+- Товч, input-ийн загвар → `components/ui/styles.js`
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

@@ -1,4 +1,4 @@
-import Movies from "@/components/Movies";
+import MovieTracker from "@/components/movies/MovieTracker";
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
         </p>
       </header>
 
-      <Movies />
+      <MovieTracker />
     </main>
   );
 }
