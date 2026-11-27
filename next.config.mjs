@@ -2,9 +2,10 @@
 const nextConfig = {
   /* config options here */
   cacheComponents: true,
-  // /api/* -> backend (localhost:4000). CORS хэрэггүй болно.
+  // /api/* -> backend (BACKEND_URL, local дээр localhost:4000). CORS хэрэггүй болно.
   rewrites() {
-    return [{ source: "/api/:path*", destination: "http://localhost:4000/:path*" }];
+    const backend = (process.env.BACKEND_URL || "http://localhost:4000").replace(/\/$/, "");
+    return [{ source: "/api/:path*", destination: `${backend}/:path*` }];
   },
   partialPrefetching: true,
   turbopack: {

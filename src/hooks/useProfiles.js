@@ -17,8 +17,7 @@ export function useProfiles() {
         const saved = loadProfileId();
         setProfileId(list.some((p) => p.id === saved) ? saved : list[0]?.id);
       },
-      () =>
-        setError("Backend-тэй холбогдож чадсангүй (localhost:4000 асаалттай юу?)"),
+      () => setError("Backend-тэй холбогдож чадсангүй"),
     );
   }, []);
 

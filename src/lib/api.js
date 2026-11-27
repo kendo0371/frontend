@@ -1,5 +1,5 @@
 // Backend руу хийх бүх хүсэлт энд.
-// /api/* нь next.config.mjs-ийн rewrite-аар localhost:4000 руу очно.
+// /api/* нь next.config.mjs-ийн rewrite-аар BACKEND_URL руу очно.
 
 async function request(url, token, options = {}) {
   const res = await fetch(url, {
