@@ -1,7 +1,7 @@
 export default function Loading() {
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-10">
-      <p className="text-zinc-500">Loading...</p>
+    <main className="mx-auto w-full max-w-3xl px-4 pt-14 sm:pt-20">
+      <p className="text-muted">Ачаалж байна...</p>
     </main>
   );
 }

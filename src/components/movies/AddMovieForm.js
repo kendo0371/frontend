@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DEFAULT_STATUS } from "@/lib/statuses";
 import StatusSelect from "@/components/ui/StatusSelect";
-import { buttonClass, inputClass } from "@/components/ui/styles";
+import { primaryButtonClass } from "@/components/ui/styles";
 
 export default function AddMovieForm({ onAdd }) {
   const [title, setTitle] = useState("");
@@ -20,19 +20,26 @@ export default function AddMovieForm({ onAdd }) {
   }
 
   return (
-    <form onSubmit={submit} className="mb-6 flex flex-col gap-2 sm:flex-row">
+    <form
+      onSubmit={submit}
+      className="mb-8 flex flex-col gap-2 rounded-2xl border border-line bg-panel p-2 transition-colors focus-within:border-glow/50 sm:flex-row sm:items-center">
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Цувралын нэр..."
-        className={`${inputClass} min-w-0 flex-1`}
+        placeholder="Ямар цуврал нэмэх вэ?"
+        aria-label="Цувралын нэр"
+        className="min-w-0 flex-1 bg-transparent px-3 py-2 text-base outline-none placeholder:text-muted/70"
       />
-      <StatusSelect value={status} onChange={setStatus} />
-      <button
-        disabled={busy || !title.trim()}
-        className={`${buttonClass} bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900`}>
-        Нэмэх
-      </button>
+      <div className="flex gap-2">
+        <StatusSelect
+          value={status}
+          onChange={setStatus}
+          className="flex-1 border-transparent bg-raise sm:flex-none"
+        />
+        <button disabled={busy || !title.trim()} className={primaryButtonClass}>
+          Нэмэх
+        </button>
+      </div>
     </form>
   );
 }

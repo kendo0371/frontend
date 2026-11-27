@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
-:root {
-  --background: #fafafa;
-  --foreground: #171717;
-}
-
+/* Фонт: layout.js-ээс ирнэ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-golos), system-ui, sans-serif;
+  --font-display: var(--font-unbounded), var(--font-golos), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Өнгө: bg-ink, text-muted, text-glow ... гэж ашиглана */
+@theme {
+  --color-ink: #0c1d2b;    /* хуудасны ар */
+  --color-panel: #13293b;  /* card, input */
+  --color-raise: #1a3549;  /* hover */
+  --color-line: #234259;   /* хүрээ */
+  --color-text: #e6f2f7;
+  --color-muted: #8aa7b8;
+  --color-glow: #52d4dd;   /* үзэж байгаа + гол товч */
+  --color-want: #f0c674;  /* үзэх (элсний шаргал) */
+  --color-done: #93dba0;   /* үзсэн */
+  --color-danger: #ff8a8a;
+
+  /* Анги солигдоход тоо доороос гарч ирнэ */
+  --animate-tick: tick 240ms ease-out;
+  @keyframes tick {
+    from { transform: translateY(35%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
 }
 
+:root {
+  color-scheme: dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-glow);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-glow);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

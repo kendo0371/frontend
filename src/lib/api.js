@@ -1,10 +1,13 @@
 // Backend руу хийх бүх хүсэлт энд.
 // /api/* нь next.config.mjs-ийн rewrite-аар localhost:4000 руу очно.
 
-async function request(url, options) {
+async function request(url, token, options = {}) {
   const res = await fetch(url, {
-    headers: { "Content-Type": "application/json" },
     ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
   });
   if (!res.ok) throw new Error(`Алдаа: ${res.status}`);
   return res.json();
@@ -18,29 +21,29 @@ export async function listProfiles() {
 }
 
 // ---- Movies ----
+// token нь Clerk-ийн getToken()-оос ирнэ. Backend үүгээр хэрэглэгчийг танина.
 
 const MOVIES = "/api/movies";
 
-export async function listMovies(profileId) {
-  const url = profileId ? `${MOVIES}?profileId=${profileId}` : MOVIES;
-  const { result } = await request(url);
+export async function listMovies(token) {
+  const { result } = await request(MOVIES, token);
   return [...result].sort((a, b) => b.id - a.id); // шинэ нь дээрээ
 }
 
-export function createMovie({ title, status, profileId }) {
-  return request(MOVIES, {
+export function createMovie(token, { title, status }) {
+  return request(MOVIES, token, {
     method: "POST",
-    body: JSON.stringify({ title, status, profileId }),
+    body: JSON.stringify({ title, status }),
   });
 }
 
-export function updateMovie(id, { title, status }) {
-  return request(`${MOVIES}/${id}`, {
+export function updateMovie(token, id, { title, status }) {
+  return request(`${MOVIES}/${id}`, token, {
     method: "PUT",
     body: JSON.stringify({ title, status }),
   });
 }
 
-export function deleteMovie(id) {
-  return request(`${MOVIES}/${id}`, { method: "DELETE" });
+export function deleteMovie(token, id) {
+  return request(`${MOVIES}/${id}`, token, { method: "DELETE" });
 }

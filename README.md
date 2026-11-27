@@ -14,7 +14,7 @@ src/
 ├── lib/                     React-гүй цэвэр JS
 │   ├── api.js               Backend руу хийх бүх fetch (profiles, movies)
 │   ├── storage.js           localStorage (сонгосон profile, анги явц)
-│   └── statuses.js          Статусын жагсаалт + өнгө  ← шинэ статус энд нэмнэ
+│   └── statuses.js          Статус, өнгө, бүлгийн гарчиг  ← шинэ статус энд нэмнэ
 │
 ├── hooks/                   State + логик (UI-гүй)
 │   ├── useProfiles.js       Profile жагсаалт, сонгох
@@ -24,7 +24,6 @@ src/
 └── components/
     ├── ui/                  Дахин ашиглагдах жижиг хэсгүүд
     │   ├── styles.js        input/button-ий нийтлэг class
-    │   ├── StatusBadge.js
     │   ├── StatusSelect.js
     │   └── Stepper.js       − 3 + товч
     ├── profiles/
@@ -32,6 +31,7 @@ src/
     └── movies/
         ├── MovieTracker.js  Гол хэсэг: hook-уудыг холбоод UI угсарна
         ├── AddMovieForm.js
+        ├── StatusTabs.js    Үзэж байгаа / Үзэх / Үзсэн таб
         ├── MovieRow.js      Жагсаалтын нэг мөр
         └── EpisodeTracker.js  S01 · E03 харуулалт
 ```
@@ -43,6 +43,7 @@ src/
 - Шинэ статус / өнгө → `lib/statuses.js`
 - Нэг мөрний харагдах байдал → `components/movies/MovieRow.js`
 - Товч, input-ийн загвар → `components/ui/styles.js`
+- Үндсэн өнгө, фонт → `app/globals.css` (`@theme`), `app/layout.js`
 
 ---
 

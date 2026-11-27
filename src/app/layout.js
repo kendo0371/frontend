@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider, Show, UserButton, SignIn } from "@clerk/nextjs";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,7 +23,25 @@ export default function RootLayout({ children }) {
     <html
       lang="mn"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ClerkProvider>
+          <Suspense>
+            <Show when="signed-out">
+              <div className="w-full h-screen flex justify-center items-center">
+                <SignIn routing="hash" />
+              </div>
+            </Show>
+
+            <Show when="signed-in">
+              <header className="flex justify-end items-center p-4 gap-4 h-16">
+                <UserButton />
+              </header>
+
+              {children}
+            </Show>
+          </Suspense>
+        </ClerkProvider>
+      </body>
     </html>
   );
 }
