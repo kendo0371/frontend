@@ -25,15 +25,15 @@ export async function listProfiles() {
 
 const MOVIES = "/api/movies";
 
-export async function listMovies(token) {
-  const { result } = await request(MOVIES, token);
+export async function listMovies(token, profileId) {
+  const { result } = await request(`${MOVIES}?profileId=${profileId}`, token);
   return [...result].sort((a, b) => b.id - a.id); // шинэ нь дээрээ
 }
 
-export function createMovie(token, { title, status }) {
+export function createMovie(token, { title, status, profileId }) {
   return request(MOVIES, token, {
     method: "POST",
-    body: JSON.stringify({ title, status }),
+    body: JSON.stringify({ title, status, profileId }),
   });
 }
 

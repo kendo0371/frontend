@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import ProfilePicker from "@/components/profiles/ProfilePicker";
 import { useMovies } from "@/hooks/useMovies";
+import { useProfiles } from "@/hooks/useProfiles";
 import { useProgress } from "@/hooks/useProgress";
 import { getStatus } from "@/lib/statuses";
 import AddMovieForm from "./AddMovieForm";
@@ -10,7 +12,9 @@ import StatusTabs from "./StatusTabs";
 
 // Нүүр хуудасны гол хэсэг: hook-уудаас data аваад UI-д дамжуулна.
 export default function MovieTracker() {
-  const { movies, error, addMovie, updateMovie, deleteMovie } = useMovies();
+  const { profiles, profileId, selectProfile, error: profileError } = useProfiles();
+  const { movies, error, addMovie, updateMovie, deleteMovie } =
+    useMovies(profileId);
   const { getEpisode, setEpisode } = useProgress();
   const [tab, setTab] = useState("watching");
 
@@ -33,13 +37,19 @@ export default function MovieTracker() {
 
   return (
     <>
+      <ProfilePicker
+        profiles={profiles}
+        value={profileId}
+        onChange={selectProfile}
+      />
+
       <AddMovieForm onAdd={handleAdd} />
 
-      {error && (
+      {(profileError || error) && (
         <p
           role="alert"
           className="mb-8 rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger">
-          {error}
+          {profileError || error}
         </p>
       )}
 

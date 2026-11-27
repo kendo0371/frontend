@@ -4,36 +4,37 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import * as api from "@/lib/api";
 
-// Нэвтэрсэн хэрэглэгчийн цувралууд + нэмэх/засах/устгах.
+// Нэвтэрсэн хэрэглэгчийн сонгосон profile-ийн цувралууд + нэмэх/засах/устгах.
 // movies === null бол ачаалж байна гэсэн үг.
-export function useMovies() {
+export function useMovies(profileId) {
   const { getToken, userId } = useAuth();
-  // Жагсаалтыг аль хэрэглэгчийнх болохтой нь хамт хадгална,
-  // ингэснээр account солиход хуучин жагсаалт харагдахгүй.
-  const [data, setData] = useState({ userId: null, list: null });
+  // Жагсаалтыг аль хэрэглэгч/profile-ийнх болохтой нь хамт хадгална,
+  // ингэснээр account эсвэл profile солиход хуучин жагсаалт харагдахгүй.
+  const key = `${userId}:${profileId}`;
+  const [data, setData] = useState({ key: null, list: null });
   const [error, setError] = useState("");
-  const movies = data.userId === userId ? data.list : null;
+  const movies = data.key === key ? data.list : null;
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !profileId) return;
     let cancelled = false;
     getToken()
-      .then(api.listMovies)
+      .then((t) => api.listMovies(t, profileId))
       .then(
-        (list) => !cancelled && setData({ userId, list }),
-        () => !cancelled && setData({ userId, list: [] }),
+        (list) => !cancelled && setData({ key, list }),
+        () => !cancelled && setData({ key, list: [] }),
       );
     return () => {
       cancelled = true;
     };
-  }, [userId, getToken]);
+  }, [key, userId, profileId, getToken]);
 
   async function refresh() {
     try {
-      setData({ userId, list: await api.listMovies(await getToken()) });
+      setData({ key, list: await api.listMovies(await getToken(), profileId) });
       setError("");
     } catch {
-      setData((d) => (d.userId === userId ? d : { userId, list: [] }));
+      setData((d) => (d.key === key ? d : { key, list: [] }));
     }
   }
 
@@ -52,7 +53,7 @@ export function useMovies() {
   return {
     movies,
     error,
-    addMovie: (movie) => run((t) => api.createMovie(t, movie)),
+    addMovie: (movie) => run((t) => api.createMovie(t, { ...movie, profileId })),
     updateMovie: (id, changes) => run((t) => api.updateMovie(t, id, changes)),
     deleteMovie: (id) => run((t) => api.deleteMovie(t, id)),
   };
